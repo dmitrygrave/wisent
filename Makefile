@@ -27,7 +27,7 @@ $(SASSOUTPUT): $(SASSINDEX)
 	sass $<:$@
 
 test:
-    @echo "Tests will be put here"
+	@echo "Tests will be put here"
 
 clean:
 	@echo "Cleaning up files..."
