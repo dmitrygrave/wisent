@@ -17,7 +17,7 @@ dart: $(JSOUTPUT)
 sass: $(SASSOUTPUT)
 
 $(OUTPUT):
-	godep go build
+	go build
 
 $(JSOUTPUT): $(DARTINDEX)
 	dart2js --out=$@ $<
