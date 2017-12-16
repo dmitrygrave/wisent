@@ -8,11 +8,12 @@ PUBLICSASS=$(PUBLIC)/sass/
 SASSINDEX=$(PUBLICSASS)$(NAME).scss
 SASSOUTPUT=$(PUBLIC)/css/$(NAME).css
 
-.PHONY: all clean
+.PHONY: build clean test
 
-all: build dart sass
+build: go dart sass
+test: test
 
-build: $(OUTPUT)
+go: $(OUTPUT)
 dart: $(JSOUTPUT)
 sass: $(SASSOUTPUT)
 
@@ -24,6 +25,9 @@ $(JSOUTPUT): $(DARTINDEX)
 
 $(SASSOUTPUT): $(SASSINDEX)
 	sass $<:$@
+
+test:
+    @echo "Tests will be put here"
 
 clean:
 	@echo "Cleaning up files..."
