@@ -3,5 +3,9 @@
 .pub
 packages
 pubspec.lock
+public/js
 
 vendor
+
+.sass-cache
+public/css

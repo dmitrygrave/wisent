@@ -8,9 +8,6 @@ PUBLICSASS=$(PUBLIC)/sass/
 SASSINDEX=$(PUBLICSASS)$(NAME).scss
 SASSOUTPUT=$(PUBLIC)/css/$(NAME).css
 
-# Dart2js production cflags
-
-
 .PHONY: all clean
 
 all: build dart sass
@@ -26,7 +23,7 @@ $(JSOUTPUT): $(DARTINDEX)
 	dart2js --out=$@ $<
 
 $(SASSOUTPUT): $(SASSINDEX)
-	sass $@:$<
+	sass $<:$@
 
 clean:
 	@echo "Cleaning up files..."
