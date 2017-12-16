@@ -11,7 +11,6 @@ SASSOUTPUT=$(PUBLIC)/css/$(NAME).css
 .PHONY: build clean test
 
 build: go dart sass
-test: test
 
 go: $(OUTPUT)
 dart: $(JSOUTPUT)
