@@ -11,6 +11,17 @@ import (
 
 var log *zap.SugaredLogger
 
+// newLumberjackLogger initializes a new lumberjack writer with the provided
+// configuration options
+func newLumberjackLogger(path string, maxSize int, maxBackups int, maxAge int) *lumberjack.Logger {
+	return &lumberjack.Logger{
+		Filename:   path,
+		MaxSize:    maxSize,
+		MaxBackups: maxBackups,
+		MaxAge:     maxAge,
+	}
+}
+
 // InitLogToFile initializes a logger which outputs to a file
 func InitLogToFile() {
 	writer := newRollingFileWriter()
@@ -37,16 +48,11 @@ func newRollingFileWriter() zapcore.WriteSyncer {
 			os.Exit(1)
 		}
 
-		print("Successfully created file\n")
+		print("Successfully created log file\n")
 	}
 
-	return zapcore.AddSync(&lumberjack.Logger{
-		Filename:   "log/wisent.log",
-		MaxSize:    20,
-		MaxAge:     30,
-		MaxBackups: 3,
-		Compress:   true,
-	})
+	// TODO: These should all come from configuration
+	return zapcore.AddSync(newLumberjackLogger("log/wisent.log", 20, 30, 3))
 }
 
 // InitLogToStdOut initializes a logger which outputs to standard out
