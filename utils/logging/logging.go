@@ -22,8 +22,8 @@ func newLumberjackLogger(path string, maxSize int, maxBackups int, maxAge int) *
 	}
 }
 
-// InitLogToFile initializes a logger which outputs to a file
-func InitLogToFile() {
+// initLogToFile initializes a logger which outputs to a file
+func initLogToFile() {
 	writer := newRollingFileWriter()
 
 	core := zapcore.NewCore(
@@ -35,6 +35,8 @@ func InitLogToFile() {
 	log = zap.New(core).Sugar()
 }
 
+// newRollingFileWriter converts the lumberjack logger into a WriteSyncer which
+// can be used in zap
 func newRollingFileWriter() zapcore.WriteSyncer {
 	// TODO: Use configuration to set the dir/file
 	_, err := os.Stat("log")
@@ -55,8 +57,8 @@ func newRollingFileWriter() zapcore.WriteSyncer {
 	return zapcore.AddSync(newLumberjackLogger("log/wisent.log", 20, 30, 3))
 }
 
-// InitLogToStdOut initializes a logger which outputs to standard out
-func InitLogToStdOut() {
+// initLogToStdOut initializes a logger which outputs to standard out
+func initLogToStdOut() {
 	config := zap.NewDevelopmentConfig()
 	config.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
 	logger, _ := config.Build()
@@ -70,9 +72,9 @@ func init() {
 
 	switch env {
 	case "DEV":
-		InitLogToStdOut()
+		initLogToStdOut()
 	case "PROD":
-		InitLogToFile()
+		initLogToFile()
 	}
 
 	log.Infof("Logging is enabled with %s", env)
