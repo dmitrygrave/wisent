@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	logging.Warn("This is a info message")
+	logging.Error("This is a Error message")
 
 	logging.Fatalf("This is a fatal message %s", "Hello world")
 }

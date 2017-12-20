@@ -1,6 +1,9 @@
 package logging
 
 import (
+	"fmt"
+	"os"
+
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
@@ -8,38 +11,42 @@ import (
 
 var log *zap.SugaredLogger
 
-// NewLumberJackLogger initializes a new lumberjack writer with the provided
-// configuration options
-func NewLumberJackLogger(path string, maxSize int, maxBackups int, maxAge int, compress bool) *lumberjack.Logger {
-	return &lumberjack.Logger{
-		Filename:   path,
-		MaxSize:    maxSize,
-		MaxBackups: maxBackups,
-		MaxAge:     maxAge,
-		Compress:   compress,
-	}
-}
-
 // InitLogToFile initializes a logger which outputs to a file
 func InitLogToFile() {
-	// TODO: Get these from configuration
-	fileName := "/log/wisent.log"
-	maxSize := 500 // MB
-	maxBackups := 3
-	maxAge := 28
-	compress := false
-
-	lumberJackWriter := NewLumberJackLogger(fileName, maxSize, maxBackups, maxAge, compress)
-
-	writer := zapcore.AddSync(lumberJackWriter)
+	writer := newRollingFileWriter()
 
 	core := zapcore.NewCore(
 		zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig()),
 		writer,
-		zap.InfoLevel,
+		zap.ErrorLevel,
 	)
 
 	log = zap.New(core).Sugar()
+}
+
+func newRollingFileWriter() zapcore.WriteSyncer {
+	// TODO: Use configuration to set the dir/file
+	_, err := os.Stat("log")
+
+	if os.IsNotExist(err) {
+		fmt.Printf("Log directory %s does not exist! Trying to create... ", "log")
+		mkDirErr := os.Mkdir("log", 0777)
+
+		if mkDirErr != nil {
+			fmt.Fprintln(os.Stderr, "Could not create log directory! Exiting...")
+			os.Exit(1)
+		}
+
+		print("Successfully created file\n")
+	}
+
+	return zapcore.AddSync(&lumberjack.Logger{
+		Filename:   "log/wisent.log",
+		MaxSize:    20,
+		MaxAge:     30,
+		MaxBackups: 3,
+		Compress:   true,
+	})
 }
 
 // InitLogToStdOut initializes a logger which outputs to standard out
@@ -59,7 +66,7 @@ func init() {
 	case "DEV":
 		InitLogToStdOut()
 	case "PROD":
-		InitLogToStdOut()
+		InitLogToFile()
 	}
 
 	log.Infof("Logging is enabled with %s", env)
