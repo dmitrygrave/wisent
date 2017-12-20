@@ -1,0 +1,10 @@
+{
+    "env": "PROD",
+    "log": {
+        "directory": "/var/log/",
+        "filename": "wisent.log",
+        "maxSize": 20,
+        "maxBackups": 3,
+        "maxAge": 30
+    }
+}

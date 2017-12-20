@@ -1,11 +1,12 @@
 package main
 
 import (
+	"github.com/dmitrygrave/wisent/utils/config"
 	"github.com/dmitrygrave/wisent/utils/logging"
 )
 
 func main() {
-	logging.Error("This is a Error message")
+	config.InitConfig("config/config.prod.json")
 
-	logging.Fatalf("This is a fatal message %s", "Hello world")
+	logging.Infof("Currently on env: %s with config file %s", config.Env(), config.LogFilename())
 }
