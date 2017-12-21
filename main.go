@@ -20,7 +20,7 @@ func main() {
 	}
 
 	config.InitConfig(configFile)
-	logging.Init(config.Env())
+	logging.InitLogging(config.Env())
 
 	signals.HandleInterrupts()
 
