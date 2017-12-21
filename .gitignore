@@ -10,4 +10,5 @@ vendor
 .sass-cache
 public/css
 
+log/
 wisent
