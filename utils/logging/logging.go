@@ -72,8 +72,8 @@ func initLogToStdOut() {
 	log = logger.Sugar()
 }
 
-// Init initializes the logger with the provided env
-func Init(env string) {
+// InitLogging initializes the logger with the provided env
+func InitLogging(env string) {
 	switch env {
 	case "DEV":
 		initLogToStdOut()
