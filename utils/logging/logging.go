@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/dmitrygrave/wisent/utils/config"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
@@ -29,7 +30,7 @@ func initLogToFile() {
 	core := zapcore.NewCore(
 		zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig()),
 		writer,
-		zap.ErrorLevel,
+		zap.InfoLevel,
 	)
 
 	log = zap.New(core).Sugar()
@@ -39,11 +40,12 @@ func initLogToFile() {
 // can be used in zap
 func newRollingFileWriter() zapcore.WriteSyncer {
 	// TODO: Use configuration to set the dir/file
-	_, err := os.Stat("log")
+	dir := config.LogDirectory()
+	_, err := os.Stat(dir)
 
 	if os.IsNotExist(err) {
-		fmt.Printf("Log directory %s does not exist! Trying to create... ", "log")
-		mkDirErr := os.Mkdir("log", 0777)
+		fmt.Printf("Log directory %s does not exist! Trying to create... ", dir)
+		mkDirErr := os.Mkdir(dir, 0777)
 
 		if mkDirErr != nil {
 			fmt.Fprintln(os.Stderr, "Could not create log directory! Exiting...")
@@ -54,7 +56,11 @@ func newRollingFileWriter() zapcore.WriteSyncer {
 	}
 
 	// TODO: These should all come from configuration
-	return zapcore.AddSync(newLumberjackLogger("log/wisent.log", 20, 30, 3))
+	return zapcore.AddSync(newLumberjackLogger(
+		fmt.Sprintf("%s%s", dir, config.LogFilename()),
+		config.LogMaxSize(),
+		config.LogMaxBackups(),
+		config.LogMaxAge()))
 }
 
 // initLogToStdOut initializes a logger which outputs to standard out
@@ -66,10 +72,8 @@ func initLogToStdOut() {
 	log = logger.Sugar()
 }
 
-func init() {
-	// TODO: Get env from config
-	env := "DEV"
-
+// Init initializes the logger with the provided env
+func Init(env string) {
 	switch env {
 	case "DEV":
 		initLogToStdOut()
