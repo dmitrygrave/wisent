@@ -65,7 +65,7 @@ func newRollingFileWriter() zapcore.WriteSyncer {
 func initLogToStdOut() {
 	config := zap.NewDevelopmentConfig()
 	config.EncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
-	logger, _ := config.Build()
+	logger, _ := config.Build(zap.AddCallerSkip(1)) // Skip 1 call site so we don't always get the functions below
 
 	log = logger.Sugar()
 }
