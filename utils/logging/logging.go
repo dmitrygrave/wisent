@@ -39,13 +39,12 @@ func initLogToFile() {
 // newRollingFileWriter converts the lumberjack logger into a WriteSyncer which
 // can be used in zap
 func newRollingFileWriter() zapcore.WriteSyncer {
-	// TODO: Use configuration to set the dir/file
-	dir := config.LogDirectory()
-	_, err := os.Stat(dir)
+	conf := config.Log()
+	_, err := os.Stat(conf.Directory)
 
 	if os.IsNotExist(err) {
-		fmt.Printf("Log directory %s does not exist! Trying to create... ", dir)
-		mkDirErr := os.Mkdir(dir, 0777)
+		fmt.Printf("Log directory %s does not exist! Trying to create... ", conf.Directory)
+		mkDirErr := os.Mkdir(conf.Directory, 0700)
 
 		if mkDirErr != nil {
 			fmt.Fprintln(os.Stderr, "Could not create log directory! Exiting...")
@@ -55,12 +54,11 @@ func newRollingFileWriter() zapcore.WriteSyncer {
 		print("Successfully created log file\n")
 	}
 
-	// TODO: These should all come from configuration
 	return zapcore.AddSync(newLumberjackLogger(
-		fmt.Sprintf("%s%s", dir, config.LogFilename()),
-		config.LogMaxSize(),
-		config.LogMaxBackups(),
-		config.LogMaxAge()))
+		fmt.Sprintf("%s%s", conf.Directory, conf.Filename),
+		conf.MaxSize,
+		conf.MaxBackups,
+		conf.MaxAge))
 }
 
 // initLogToStdOut initializes a logger which outputs to standard out

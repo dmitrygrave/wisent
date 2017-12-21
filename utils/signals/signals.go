@@ -32,7 +32,12 @@ func HandleInterrupt() {
 func HandleInterrupts() {
 	channel := make(chan os.Signal)
 	signal.Notify(channel, os.Interrupt)
-	go func() {
-		HandleInterrupt()
-	}()
+	go func(channel chan os.Signal) {
+		for signal := range channel {
+			switch signal {
+			case os.Interrupt:
+				HandleInterrupt()
+			}
+		}
+	}(channel)
 }
