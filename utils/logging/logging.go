@@ -87,7 +87,7 @@ func Debug(msg string) {
 
 // Debugf logs a formatted message with the debug log level
 func Debugf(templ string, args ...interface{}) {
-	log.Debugf(templ, args)
+	log.Debugf(templ, args...)
 }
 
 // Info logs a message with the info log level
@@ -97,7 +97,7 @@ func Info(msg string) {
 
 // Infof logs a formatted message with the info log level
 func Infof(templ string, args ...interface{}) {
-	log.Infof(templ, args)
+	log.Infof(templ, args...)
 }
 
 // Warn logs a message with the warn log level
@@ -107,7 +107,7 @@ func Warn(msg string) {
 
 // Warnf logs a formatted string with the warn log level
 func Warnf(templ string, args ...interface{}) {
-	log.Warnf(templ, args)
+	log.Warnf(templ, args...)
 }
 
 // Error logs a message with the error log level
@@ -117,7 +117,7 @@ func Error(msg string) {
 
 // Errorf logs a formatted message with the error log level
 func Errorf(templ string, args ...interface{}) {
-	log.Errorf(templ, args)
+	log.Errorf(templ, args...)
 }
 
 // Fatal logs a message with the fatal log level then calls os.Exit
@@ -127,7 +127,7 @@ func Fatal(msg string) {
 
 // Fatalf logs a formatted message with the fatal log level then calls os.Exit
 func Fatalf(templ string, args ...interface{}) {
-	log.Fatalf(templ, args)
+	log.Fatalf(templ, args...)
 }
 
 // Panic logs a message with the panic log level then panics
@@ -136,11 +136,11 @@ func Panic(msg string) {
 }
 
 // Panicf logs a formatted message with the panic log level then panics
-func Panicf(templ string, args interface{}) {
-	log.Panicf(templ, args)
+func Panicf(templ string, args ...interface{}) {
+	log.Panicf(templ, args...)
 }
 
 // With adds a variadic number of fields (key-value pairs) to the logging context
 func With(args ...interface{}) {
-	log.With(args)
+	log.With(args...)
 }
