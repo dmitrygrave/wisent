@@ -12,6 +12,7 @@ import (
 // recommended not to use any default types
 type contextKey string
 
+// csrfContextKey is the key to use when setting the CSRF context
 const csrfContextKey = contextKey("csrf-key")
 
 // csrfContext contains either the csrf token or an error describing why

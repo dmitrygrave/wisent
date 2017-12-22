@@ -74,7 +74,8 @@ func defaultFailureHandler(w http.ResponseWriter, r *http.Request) {
 	http.Error(w, http.StatusText(400), 400)
 }
 
-// New initializes a new CSRFHandler
+// New initializes a new CSRFHandler and passes in the handler to call when
+// successful
 func New(handler http.Handler) *Handler {
 	csrf := &Handler{
 		success:       handler,
@@ -86,7 +87,7 @@ func New(handler http.Handler) *Handler {
 	return csrf
 }
 
-// SetCookieOptions sets the cookie
+// SetCookieOptions sets the cookie with the provided options
 func (handler *Handler) SetCookieOptions(name string, maxAge int, secure bool, httpOnly bool, path string, domain string, authKey []byte) {
 	handler.baseCookie = &cookie{
 		name:         name,
@@ -103,6 +104,11 @@ func (handler *Handler) SetCookieOptions(name string, maxAge int, secure bool, h
 // check
 func (handler *Handler) SetFailureHandler(failureHandler http.Handler) {
 	handler.failure = failureHandler
+}
+
+// SetExemptMethods sets the methods which will not be checked
+func (handler *Handler) SetExemptMethods(methods []string) {
+	handler.exemptMethods = methods
 }
 
 // ServeHTTP wraps around the http.Handler and validates that the CSRF token
