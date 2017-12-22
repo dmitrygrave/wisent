@@ -52,8 +52,7 @@ func TestContextIsAvailable(t *testing.T) {
 	handlerFunc := func(w http.ResponseWriter, r *http.Request) {
 		token := GetReqToken(r)
 
-		if token != "" {
-			print(token)
+		if token == "" {
 			t.Error("Could not find token in request")
 		}
 	}
