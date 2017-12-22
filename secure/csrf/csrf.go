@@ -88,7 +88,7 @@ func New(handler http.Handler) *Handler {
 }
 
 // SetCookieOptions sets the cookie with the provided options
-func (handler *Handler) SetCookieOptions(name string, maxAge int, secure bool, httpOnly bool, path string, domain string, authKey []byte) {
+func (handler *Handler) SetCookieOptions(name string, maxAge int, secure bool, httpOnly bool, path string, domain string, authKey string) {
 	handler.baseCookie = &cookie{
 		name:         name,
 		maxAge:       maxAge,
@@ -96,7 +96,7 @@ func (handler *Handler) SetCookieOptions(name string, maxAge int, secure bool, h
 		httpOnly:     httpOnly,
 		path:         path,
 		domain:       domain,
-		secureCookie: securecookie.New(authKey, nil),
+		secureCookie: securecookie.New([]byte(authKey), nil),
 	}
 }
 
@@ -117,7 +117,10 @@ func (handler *Handler) SetExemptMethods(methods []string) {
 func (handler *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	r = addContext(r)
 
-	w.Header().Add("Vary", "Cookie")
+	// Check to make sure the baseCookie is set
+	if handler.baseCookie == nil {
+		logging.Fatal("basecookie is null! Did you call csrf.Handler.SetCookieOptions?")
+	}
 
 	realToken, err := handler.baseCookie.Get(r)
 

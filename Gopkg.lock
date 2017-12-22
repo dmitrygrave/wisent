@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  name = "github.com/google/go-cmp"
+  packages = ["cmp","cmp/internal/diff","cmp/internal/function","cmp/internal/value"]
+  revision = "8099a9787ce5dc5984ed879a3bda47dc730a8e97"
+  version = "v0.1.0"
+
+[[projects]]
   name = "github.com/gorilla/securecookie"
   packages = ["."]
   revision = "667fe4e3466a040b780561fe9b51a83a3753eefc"
@@ -34,6 +40,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "2be28af9ba60842f229000fac793d14d8e70172c57861deb8e538572c0b7f534"
+  inputs-digest = "3642e741a01752e65b9332a96dd70e6d2c3bf39947cd063a1dfeecbfae22c7f1"
   solver-name = "gps-cdcl"
   solver-version = 1
