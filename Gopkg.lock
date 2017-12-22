@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  name = "github.com/gorilla/securecookie"
+  packages = ["."]
+  revision = "667fe4e3466a040b780561fe9b51a83a3753eefc"
+  version = "v1.1"
+
+[[projects]]
   name = "go.uber.org/atomic"
   packages = ["."]
   revision = "8474b86a5a6f79c443ce4b2992817ff32cf208b8"
@@ -28,6 +34,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "4e56bae68db45690431363f15d1dcc7b8a412c4522bab27b460e3f0797d4b1f1"
+  inputs-digest = "2dbae046619219075fe4a896a669fcd11111e938e08c4f22e4d9ff8304c7f827"
   solver-name = "gps-cdcl"
   solver-version = 1
